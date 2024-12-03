@@ -1,9 +1,8 @@
 import { StyleSheet, SafeAreaView } from 'react-native';
-import TransacaoListScreen from './screens/transacaolistscrenn';
 import { Transaction } from './types';
-import Router from './router';
 import RootStack from './stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { Text } from '@react-navigation/elements';
 
 export default function App() {
   const transactions: Transaction[] = [

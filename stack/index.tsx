@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TransacaoListScreen from '../screens/transacaolistscrenn';
 import { Transaction } from '../types';
+import AutenticationScreen from '../screens/autenticationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,17 +35,12 @@ export default function RootStack(): React.JSX.Element {
     },
   ];
 
-  const TransacaoListScreenComponent = () => (
-    <TransacaoListScreen transactions={transactions} />
-  );
-
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name='Home'
-        component={TransacaoListScreenComponent}
-        options={{ orientation: 'all' }}
-      />
+    <Stack.Navigator screenOptions={{ orientation: 'all' }}>
+      <Stack.Screen name='Home' component={AutenticationScreen} />
+      <Stack.Screen name='transactions' options={{ orientation: 'all' }}>
+        {() => <TransacaoListScreen transactions={transactions} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }
