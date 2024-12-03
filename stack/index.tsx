@@ -1,11 +1,12 @@
-import { StyleSheet, SafeAreaView } from 'react-native';
-import TransacaoListScreen from './screens/transacaolistscrenn';
-import { Transaction } from './types';
-import Router from './router';
-import RootStack from './stack';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TransacaoListScreen from '../screens/transacaolistscrenn';
+import { Transaction } from '../types';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+export default function RootStack(): React.JSX.Element {
   const transactions: Transaction[] = [
     {
       description: 'Compra no mercado',
@@ -33,18 +34,17 @@ export default function App() {
     },
   ];
 
+  const TransacaoListScreenComponent = () => (
+    <TransacaoListScreen transactions={transactions} />
+  );
+
   return (
-    <SafeAreaView style={{ ...styles.container }}>
-      <NavigationContainer>
-        <RootStack />
-      </NavigationContainer>
-    </SafeAreaView>
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Home'
+        component={TransacaoListScreenComponent}
+        options={{ orientation: 'all' }}
+      />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});
