@@ -1,3 +1,5 @@
+import { StyleProp, ViewStyle } from 'react-native';
+
 interface Transaction {
     description: string;
     value: number;
@@ -8,4 +10,9 @@ interface Transaction {
     coin: string;
 }
 
-export { Transaction };
+interface Orientation {
+    portrait?: StyleProp<ViewStyle>;
+    landscape?: StyleProp<ViewStyle>;
+}
+
+export { Transaction, Orientation };
