@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { Orientation } from '../types';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types';
 
 function useOrientation(): 'portrait' | 'landscape' {
     const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
@@ -34,4 +36,9 @@ function selectByOrientation({
     return orientation === 'portrait' ? portrait : landscape;
 }
 
-export { useOrientation, selectByOrientation };
+export default function useStackNavigation(): NavigationProp<RootStackParamList> {
+    const result = useNavigation<NavigationProp<RootStackParamList>>();
+    return result;
+}
+
+export { useOrientation, selectByOrientation, useStackNavigation };

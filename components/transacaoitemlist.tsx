@@ -15,6 +15,8 @@ export default function TransacaoItemList({
         currency: transaction.coin,
     }).format(transaction.value);
 
+    transaction.date = new Date(transaction.date);
+
     const formattedDate = transaction.date.toLocaleDateString();
     const formattedTime = transaction.hour;
     const orientation = useOrientation();

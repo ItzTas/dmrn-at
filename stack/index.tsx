@@ -1,46 +1,62 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TransacaoListScreen from '../screens/transacaolistscrenn';
-import { Transaction } from '../types';
-import AutenticationScreen from '../screens/autenticationScreen';
+import AutenticationScreen from '../screens/autenticationscreen';
+import OverviewScreen from '../screens/overviewscreen';
+import { useStackNavigation } from '../utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddTransactionScreen from '../screens/addtransactionscreen';
+import { Alert } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function RootStack(): React.JSX.Element {
-  const transactions: Transaction[] = [
-    {
-      description: 'Compra no mercado',
-      value: 120.5,
-      date: new Date(),
-      hour: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      category: 'Alimentação',
-      type: 'expense',
-      coin: 'BRL',
-    },
-    {
-      description: 'Salário',
-      value: 3000,
-      date: new Date(),
-      hour: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      category: 'Renda',
-      type: 'income',
-      coin: 'BRL',
-    },
-  ];
+    const navigation = useStackNavigation();
 
-  return (
-    <Stack.Navigator screenOptions={{ orientation: 'all' }}>
-      <Stack.Screen name='Home' component={AutenticationScreen} />
-      <Stack.Screen name='transactions' options={{ orientation: 'all' }}>
-        {() => <TransacaoListScreen transactions={transactions} />}
-      </Stack.Screen>
-    </Stack.Navigator>
-  );
+    useEffect(() => {
+        async function checkUser() {
+            try {
+                const user = await AsyncStorage.getItem('@user');
+                if (!user) {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Autentication' }],
+                    });
+                }
+            } catch (err: any) {
+                Alert.alert('Error fetching user data:', err);
+            }
+        }
+
+        checkUser();
+    }, [navigation]);
+
+    return (
+        <Stack.Navigator screenOptions={{ orientation: 'all' }}>
+            <Stack.Screen
+                name='Home'
+                component={OverviewScreen}
+                options={{ title: 'Overview', orientation: 'all' }}
+            />
+            <Stack.Screen
+                name='Autentication'
+                component={AutenticationScreen}
+                options={{
+                    headerLeft: () => null,
+                    gestureEnabled: false,
+                    orientation: 'all',
+                }}
+            />
+            <Stack.Screen
+                name='Transactions'
+                component={TransacaoListScreen}
+                options={{ title: 'Transactions', orientation: 'all' }}
+            />
+            <Stack.Screen
+                name='AddTransaction'
+                component={AddTransactionScreen}
+                options={{ title: 'Add Transaction', orientation: 'all' }}
+            />
+        </Stack.Navigator>
+    );
 }

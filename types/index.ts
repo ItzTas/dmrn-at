@@ -15,4 +15,25 @@ interface Orientation {
     landscape?: StyleProp<ViewStyle>;
 }
 
-export { Transaction, Orientation };
+interface BCBCoinOverview {
+    simbolo: string;
+    tipoMoeda: string;
+    nomeFormatado: string;
+}
+
+interface BCBCoinDetails { }
+
+interface RootStackParamList {
+    Home: undefined;
+    Autentication: undefined;
+    AddTransaction: undefined;
+    Transactions: undefined;
+}
+
+export {
+    Transaction,
+    Orientation,
+    BCBCoinOverview,
+    BCBCoinDetails,
+    RootStackParamList,
+};
