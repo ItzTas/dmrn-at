@@ -3,7 +3,6 @@ import { Alert, FlatList, StyleSheet, TextInput, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Transaction } from '../types';
 import TransacaoItemList from '../components/transacaoitemlist';
-import NavigationButton from '../components/navigationButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TransacaoListScreen(): React.JSX.Element {
@@ -71,20 +70,23 @@ export default function TransacaoListScreen(): React.JSX.Element {
                 value={filter}
                 onChangeText={setFilter}
             />
-            <Picker
-                selectedValue={sortKey}
-                onValueCha // Padding to avoid cutoff of last itemge={(itemValue) => setSortKey(itemValue)}
-                style={styles.picker}
-            >
-                <Picker.Item label='Ordenar por...' value={null} />
-                <Picker.Item label='Descrição' value='description' />
-                <Picker.Item label='Valor' value='value' />
-                <Picker.Item label='Data' value='date' />
-                <Picker.Item label='Hora' value='hour' />
-                <Picker.Item label='Categoria' value='category' />
-                <Picker.Item label='Tipo' value='type' />
-                <Picker.Item label='Moeda' value='coin' />
-            </Picker>
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={sortKey}
+                    onValueChange={(value) =>
+                        setSortKey(value as keyof Transaction | null)
+                    }
+                >
+                    <Picker.Item label='Ordenar por...' value={null} />
+                    <Picker.Item label='Descrição' value='description' />
+                    <Picker.Item label='Valor' value='value' />
+                    <Picker.Item label='Data' value='date' />
+                    <Picker.Item label='Hora' value='hour' />
+                    <Picker.Item label='Categoria' value='category' />
+                    <Picker.Item label='Tipo' value='type' />
+                    <Picker.Item label='Moeda' value='coin' />
+                </Picker>
+            </View>
         </View>
     );
 
@@ -104,9 +106,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#f9f9f9',
     },
-    container: {
-        flex: 1,
-    },
     input: {
         borderWidth: 1,
         borderColor: '#ddd',
@@ -114,11 +113,11 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 16,
     },
-    picker: {
+    pickerContainer: {
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 8,
-        marginBottom: 16,
+        overflow: 'hidden',
     },
     listContent: {
         paddingBottom: 20,
