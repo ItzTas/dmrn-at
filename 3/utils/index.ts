@@ -1,7 +1,8 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Orientation, RootStackParamList } from '../types';
-import { Dimensions, StyleProp, ViewStyle } from 'react-native';
+import { Alert, Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function useOrientation(): 'portrait' | 'landscape' {
     const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
@@ -40,4 +41,29 @@ function useStackNavigation(): NavigationProp<RootStackParamList> {
     return result;
 }
 
-export { useStackNavigation, useOrientation, selectByOrientation };
+async function getUserToken(): Promise<string> {
+    const token = await AsyncStorage.getItem('@token');
+    if (!token) {
+        sendToAutenticationScreenAndClearToken();
+        return '';
+    }
+    return token;
+}
+
+async function sendToAutenticationScreenAndClearToken() {
+    const navigation = useStackNavigation();
+    navigation.reset({
+        index: 0,
+        routes: [{ name: 'Autentication' }],
+    });
+    Alert.alert('Token exirado!');
+    await AsyncStorage.removeItem('@token');
+}
+
+export {
+    useStackNavigation,
+    useOrientation,
+    selectByOrientation,
+    getUserToken,
+    sendToAutenticationScreenAndClearToken,
+};
