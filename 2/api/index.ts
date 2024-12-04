@@ -5,10 +5,12 @@ interface GetNasaAstroDataProps {
     page?: number;
 }
 
-async function getNasaAstroData({
-    astro = 'earth',
-    page = 1,
-}: GetNasaAstroDataProps): Promise<NasaAstroCollection> {
+async function getNasaAstroData(
+    { astro = 'earth', page = 1 }: GetNasaAstroDataProps = {
+        astro: 'earth',
+        page: 1,
+    },
+): Promise<NasaAstroCollection> {
     const res = await fetch(
         `https://images-api.nasa.gov/search?q=${astro}&page=${page}`,
     );

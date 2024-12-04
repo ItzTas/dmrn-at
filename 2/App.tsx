@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import ImageGallery from './views/imagegallery';
 
 export default function App() {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar style='auto' />
-            <Text></Text>
-        </View>
+            <ImageGallery />
+        </SafeAreaView>
     );
 }
 
