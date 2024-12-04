@@ -13,17 +13,20 @@ import { Item } from '../types/nasa.astro';
 import { getNasaAstroData } from '../api';
 import { ProgressBar } from 'react-native-paper';
 import ItemDisplay from '../components/astroitem';
+import useStackNavigation from '../utils';
 
 const astros = ['earth', 'moon', 'sun', 'mars', 'jupiter'];
 
 export default function ImageGallery(): React.JSX.Element {
     const initialItems: Item[] = [];
-    const [items, setItems] = useState < Item[] > (initialItems);
-    const [selectedAstro, setSelectedAstro] = useState < string > (astros[0]);
-    const [page, setPage] = useState < number > (1);
+    const [items, setItems] = useState<Item[]>(initialItems);
+    const [selectedAstro, setSelectedAstro] = useState<string>(astros[0]);
+    const [page, setPage] = useState<number>(1);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [totalItems, setTotalItems] = useState < number > (0);
+    const [totalItems, setTotalItems] = useState<number>(0);
+
+    const navigation = useStackNavigation();
 
     useEffect(() => {
         loadItems(selectedAstro, page);
@@ -64,6 +67,10 @@ export default function ImageGallery(): React.JSX.Element {
 
     const progress = totalItems ? items.length / totalItems : 0;
 
+    function handleItemClick(item: Item) {
+        navigation.navigate('Details', { item });
+    }
+
     return (
         <View style={{ flex: 1, width: '100%' }}>
             <SearchBar onSearch={handleSearch} astros={astros} />
@@ -96,7 +103,14 @@ export default function ImageGallery(): React.JSX.Element {
 
             <FlatList
                 data={items}
-                renderItem={({ item }) => <ItemDisplay item={item} />}
+                renderItem={({ item }) => (
+                    <ItemDisplay
+                        item={item}
+                        onClick={() => {
+                            handleItemClick(item);
+                        }}
+                    />
+                )}
                 keyExtractor={(item: Item, index) => `${item.href}${index.toString()}`}
                 ListFooterComponent={<View style={{ padding: 20 }} />}
                 initialNumToRender={10}

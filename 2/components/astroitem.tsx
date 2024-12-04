@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text, Image, StyleSheet, View } from 'react-native';
+import { Text, Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Item } from '../types/nasa.astro';
 import { extractImagePreviewFromItem } from '../utils';
 
 interface Props {
     item: Item;
+    onClick: () => void;
 }
 
-export default function ItemDisplay({ item }: Props) {
+export default function ItemDisplay({ item, onClick }: Props) {
     const data = item.data[0];
     const imageUrls = extractImagePreviewFromItem(item);
 
@@ -16,7 +17,7 @@ export default function ItemDisplay({ item }: Props) {
     }
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onClick}>
             <Text style={styles.imageName}>{data.title}</Text>
             <View>
                 {imageUrls.map((url, i) => (
@@ -27,7 +28,7 @@ export default function ItemDisplay({ item }: Props) {
                     />
                 ))}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

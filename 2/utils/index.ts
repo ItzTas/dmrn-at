@@ -1,4 +1,6 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Item } from '../types/nasa.astro';
+import { RootStackParams } from '../types/stack';
 
 function extractImagePreviewFromItem(item: Item): string[] {
     if (!item.links || item?.links?.length === 0) {
@@ -12,4 +14,9 @@ function extractImagePreviewFromItem(item: Item): string[] {
     return linksWithImages.map((link) => link.href);
 }
 
-export { extractImagePreviewFromItem };
+export default function useStackNavigation(): NavigationProp<RootStackParams> {
+    const result = useNavigation < NavigationProp < RootStackParams >> ();
+    return result;
+}
+
+export { extractImagePreviewFromItem, useStackNavigation };
